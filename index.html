@@ -1,1 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apocalipse Zumbi em CSS</title>
+<style>
+    /* Configurações gerais da página e do ambiente do jogo */
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #1a1a2e; /* Fundo escuro noturno */
+        overflow: hidden; /* Impede a rolagem da tela */
+        font-family: 'Courier New', Courier, monospace;
+        cursor: crosshair; /* Muda o mouse para uma mira */
+    }
 
+    /* O container do jogo que reseta o contador de pontos */
+    .game-board {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        counter-reset: score; /* Cria a variável de pontuação no CSS */
+    }
+
+    /* Esconde as caixas de seleção, elas são a "lógica" do jogo */
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    /* Estilo e animação base dos zumbis */
+    .zombie {
+        position: absolute;
+        bottom: -100px;
+        font-size: 70px; /* Tamanho do emoji do zumbi */
+        cursor: crosshair;
+        transition: transform 0.1s;
+        /* A animação fará eles subirem e descerem */
+        animation: riseUp 4s infinite ease-in-out;
+    }
+
+    /* Efeito de hover para parecer que você está mirando neles */
+    .zombie:hover {
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 10px red);
+    }
+
+    /* A mágica do jogo: se o checkbox for clicado (checked), o zumbi some e o placar sobe */
+    input[type="checkbox"]:checked {
+        counter-increment: score; /* Adiciona 1 ao placar */
+    }
+    
+    input[type="checkbox"]:checked + .zombie {
+        display: none; /* Remove o zumbi morto da tela */
+    }
+
+    /* Configurações individuais para cada zumbi (posição e velocidade) */
+    .z1 { left: 10%; animation-duration: 3s; }
+    .z2 { left: 30%; animation-duration: 5s; animation-delay: 1s; }
+    .z3 { left: 50%; animation-duration: 4s; animation-delay: 2s; }
+    .z4 { left: 70%; animation-duration: 6s; animation-delay: 0.5s; }
+    .z5 { left: 85%; animation-duration: 3.5s; animation-delay: 1.5s; }
+
+    /* Animação que faz os zumbis aparecerem do fundo da tela */
+    @keyframes riseUp {
+        0%   { bottom: -100px; }
+        50%  { bottom: 60vh; }
+        100% { bottom: -100px; }
+    }
+
+    /* Estilização do Placar */
+    .score-board {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: #e94560;
+        font-size: 30px;
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px 20px;
+        border: 2px solid #e94560;
+        border-radius: 10px;
+        pointer-events: none; /* Impede que o placar atrapalhe os cliques */
+    }
+
+    /* Mostra o valor do contador criado no CSS */
+    .score-board::after {
+        content: counter(score) " / 5";
+    }
+
+    /* Decoração de fundo (Chão) */
+    .ground {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100px;
+        background: linear-gradient(to top, #0f0f1b, transparent);
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="game-board">
+    <div class="score-board">Zumbis Eliminados: </div>
+
+    <input type="checkbox" id="zombie1">
+    <label for="zombie1" class="zombie z1">🧟</label>
+
+    <input type="checkbox" id="zombie2">
+    <label for="zombie2" class="zombie z2">🧟</label>
+
+    <input type="checkbox" id="zombie3">
+    <label for="zombie3" class="zombie z3">🧟</label>
+
+    <input type="checkbox" id="zombie4">
+    <label for="zombie4" class="zombie z4">🧟‍♂️</label>
+
+    <input type="checkbox" id="zombie5">
+    <label for="zombie5" class="zombie z5">🧟‍♀️</label>
+
+    <div class="ground"></div>
+</div>
+
+</body>
+</html>
